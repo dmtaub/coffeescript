@@ -2869,17 +2869,10 @@ exports.Param = class Param extends Base
     fragments = @name.compileToFragments o, LEVEL_LIST
     # handle compiling (a::string) to function(a/*: string*/)
     if @type?
-      fragments.push new HereComment(content: ':' + @type.compile o, newLine: false).compileNode o
-      # fragments.push new CodeFragment
-      #   code: "/*: #{@type} */"
-      #   type: 'HereComment'
-      #   locationData: undefined
-      #   comments: undefined
-      #   newLine: false
-      #   unshift: undefined
-      #   multiline: false
-      #   isHereComment: true
-      #   isComment: true
+      fragments.push (new HereComment
+        content: ':' + @type.value
+        newLine: false).compileNode o
+
     return fragments
 
   compileToFragmentsWithoutComments: (o) ->
