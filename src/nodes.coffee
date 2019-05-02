@@ -2854,7 +2854,7 @@ exports.Code = class Code extends Base
 # these parameters can also attach themselves to the context of the function,
 # as well as be a splat, gathering up a group of parameters into an array.
 exports.Param = class Param extends Base
-  constructor: (@name, @value, @splat) ->
+  constructor: (@name, @value, @splat, @type) ->
     super()
 
     message = isUnassignable @name.unwrapAll().value
@@ -2867,6 +2867,17 @@ exports.Param = class Param extends Base
 
   compileToFragments: (o) ->
     @name.compileToFragments o, LEVEL_LIST
+    # if @type?
+    #   commentsNode = new Value @type
+    #   commentsNode.comments = @name.comments
+    #   commentFragments = []
+    #   @compileCommentFragments o, commentsNode, commentFragments
+    #   o.scope.comments[@name.value] = commentFragments
+    # #@comments=[{content: @type, here: true}]
+
+
+
+
 
   compileToFragmentsWithoutComments: (o) ->
     @name.compileToFragmentsWithoutComments o, LEVEL_LIST
