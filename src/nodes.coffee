@@ -2866,18 +2866,21 @@ exports.Param = class Param extends Base
   children: ['name', 'value']
 
   compileToFragments: (o) ->
-    @name.compileToFragments o, LEVEL_LIST
-    # if @type?
-    #   commentsNode = new Value @type
-    #   commentsNode.comments = @name.comments
-    #   commentFragments = []
-    #   @compileCommentFragments o, commentsNode, commentFragments
-    #   o.scope.comments[@name.value] = commentFragments
-    # #@comments=[{content: @type, here: true}]
-
-
-
-
+    fragments = @name.compileToFragments o, LEVEL_LIST
+    # handle compiling (a::string) to function(a/*: string*/)
+    if @type?
+      fragments.push new HereComment(content: ':' + @type.compile o, newLine: false).compileNode o
+      # fragments.push new CodeFragment
+      #   code: "/*: #{@type} */"
+      #   type: 'HereComment'
+      #   locationData: undefined
+      #   comments: undefined
+      #   newLine: false
+      #   unshift: undefined
+      #   multiline: false
+      #   isHereComment: true
+      #   isComment: true
+    return fragments
 
   compileToFragmentsWithoutComments: (o) ->
     @name.compileToFragmentsWithoutComments o, LEVEL_LIST

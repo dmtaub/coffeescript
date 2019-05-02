@@ -317,8 +317,8 @@ grammar =
     o '... ParamVar',                           -> new Param $2, null, on
     o 'ParamVar = Expression',                  -> new Param $1, $3
     o '...',                                    -> new Expansion
-    o 'ParamVar :: Property',                   -> new Param $1, null, off, $2
-    o 'ParamVar :: Property = Expression',      -> new Param $1, $3,   off, $2
+    o 'ParamVar :: Property',                   -> new Param $1, null, off, $3
+    o 'ParamVar :: Property = Expression',      -> new Param $1, $5,   off, $3
   ]
 
   # Function Parameters
