@@ -504,3 +504,12 @@ test "#5121: array end bracket after function glyph", ->
 
   b = [c: ->]
   eq b.length, 1
+
+test "typed parameters don't break anything", ->
+  f = (p :: string) -> p
+  eq 42, f(42)
+
+test "typed parameters don't break anything 2", ->
+  f = (@p :: string) -> @p
+  eq 42, f(42)
+

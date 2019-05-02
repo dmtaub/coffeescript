@@ -2854,7 +2854,7 @@ exports.Code = class Code extends Base
 # these parameters can also attach themselves to the context of the function,
 # as well as be a splat, gathering up a group of parameters into an array.
 exports.Param = class Param extends Base
-  constructor: (@name, @value, @splat) ->
+  constructor: (@name, @value, @splat, @type) ->
     super()
 
     message = isUnassignable @name.unwrapAll().value
@@ -2866,7 +2866,14 @@ exports.Param = class Param extends Base
   children: ['name', 'value']
 
   compileToFragments: (o) ->
-    @name.compileToFragments o, LEVEL_LIST
+    fragments = @name.compileToFragments o, LEVEL_LIST
+    # handle compiling (a::string) to function(a/*: string*/)
+    if @type?
+      fragments.push (new HereComment
+        content: ':' + @type.value
+        newLine: false).compileNode o
+
+    return fragments
 
   compileToFragmentsWithoutComments: (o) ->
     @name.compileToFragmentsWithoutComments o, LEVEL_LIST
